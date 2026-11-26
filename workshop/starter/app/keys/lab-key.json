@@ -1,0 +1,10 @@
+{
+  "type": "service_account",
+  "project_id": "REPLACE_WITH_LAB_PROJECT",
+  "private_key_id": "PLACEHOLDER_NOT_A_REAL_KEY",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nPLACEHOLDER\n-----END PRIVATE KEY-----\n",
+  "client_email": "lab-sa@REPLACE_WITH_LAB_PROJECT.iam.gserviceaccount.com",
+  "client_id": "000000000000000000000",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token"
+}

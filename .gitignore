@@ -1,0 +1,18 @@
+# Terraform local state and provider caches
+.terraform/
+*.tfstate
+*.tfstate.*
+
+# Local environment overrides (keep the committed example)
+.env
+.env.*
+!.env.example
+
+# OS and editor artifacts
+.DS_Store
+Thumbs.db
+
+# Logs and language caches
+*.log
+__pycache__/
+*.pyc

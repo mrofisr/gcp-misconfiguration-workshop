@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Fixing Google Cloud Misconfigurations with Gemini</title>
+    <link rel="stylesheet" href="vendor/reveal.css" />
+    <link rel="stylesheet" href="vendor/theme/simple.css" id="theme" />
+    <link rel="stylesheet" href="slides.css" />
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section id="agenda">
+          <h1>Fixing Google Cloud Misconfigurations with Gemini</h1>
+          <p class="subtitle">A 90-minute, hands-on session for first-time cloud users</p>
+          <table class="agenda">
+            <thead>
+              <tr><th>#</th><th>Time</th><th>Segment</th><th>Key message</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td>10 min</td><td>Setup</td><td>Install and sign in to Antigravity CLI; run <code>doctor</code></td></tr>
+              <tr><td>2</td><td>10 min</td><td>Plain-language intro</td><td>A bucket is a folder in the cloud; IAM is who may open it</td></tr>
+              <tr><td>3</td><td>15 min</td><td>Find the problems</td><td>Ask Gemini 4 to review the starter repo in plain language</td></tr>
+              <tr><td>4</td><td>20 min</td><td>Fix 1 — bucket and permissions</td><td>Make the bucket private and reduce the permission</td></tr>
+              <tr><td>5</td><td>15 min</td><td>Fix 2 — app credential and input</td><td>Remove the hardcoded key and validate the file name</td></tr>
+              <tr><td>6</td><td>10 min</td><td>Verify</td><td>Use <code>gcloud</code> and the app to prove both fixes worked</td></tr>
+              <tr><td>7</td><td>10 min</td><td>Recap and teardown</td><td>What changed, why, and run <code>destroy</code></td></tr>
+            </tbody>
+          </table>
+          <p class="total">Total: <strong>90 minutes</strong> · Seven segments · No cloud knowledge assumed</p>
+          <aside class="notes">
+            The agenda is the contract for the session. Keep the pace: ten minutes for setup, ten for the
+            plain-language intro, fifteen to find the problems, twenty for fix one, fifteen for fix two,
+            ten to verify, and ten for recap and teardown. Everything is already prepared for participants.
+          </aside>
+        </section>
+
+        <section data-segment="setup" data-duration="10" data-title="Setup">
+          <section>
+            <h2>1 · Setup <span class="duration">10 min</span></h2>
+            <p class="key-message">Install and sign in to Antigravity CLI; run <code>doctor</code></p>
+            <aside class="notes">
+              Show the three platform command forms. Participants run doctor. Expected: tool checks pass;
+              cloud checks pass in the prepared project. If a check fails, use the facilitator guide
+              troubleshooting table.
+            </aside>
+          </section>
+          <section>
+            <h3>Three command forms, one result</h3>
+            <pre><code>make doctor        # macOS / Linux
+task doctor        # any platform with go-task
+.\Setup.ps1 doctor # Windows PowerShell</code></pre>
+            <p>Expected: tool checks pass and cloud checks pass in the prepared project.</p>
+            <p class="hint">If a check fails → facilitator guide troubleshooting table.</p>
+            <aside class="notes">
+              All four commands are available to everyone. doctor is read-only. The first Windows run of
+              Setup.ps1 also installs prerequisites; that is why setup owns the first ten minutes.
+            </aside>
+          </section>
+        </section>
+
+        <section data-segment="intro" data-duration="10" data-title="Plain-language intro">
+          <section>
+            <h2>2 · Plain-language intro <span class="duration">10 min</span></h2>
+            <p class="key-message">A bucket is a folder in the cloud; IAM is who may open it</p>
+            <aside class="notes">
+              Use the words from glossary.md only after defining them. Say explicitly: "You do not need to
+              know how to set any of this up."
+            </aside>
+          </section>
+          <section>
+            <h3>Three sentences</h3>
+            <ol>
+              <li>Cloud = someone else's computer.</li>
+              <li>Bucket = a folder there.</li>
+              <li>IAM = the guest list.</li>
+            </ol>
+            <p class="hint">You do not need to know how to set any of this up.</p>
+            <aside class="notes">
+              Define each term before using it again. Do not introduce IAM theory, roles, or policy syntax
+              here; the guest-list image is enough for this audience.
+            </aside>
+          </section>
+          <section>
+            <h3>See it: bucket and guest list</h3>
+            <div class="figure-frame" data-prevent-swipe>
+              <iframe src="figures/bucket-iam.html?embed" title="Interactive bucket and IAM figure" data-prevent-swipe loading="eager"></iframe>
+              <img class="figure-poster" src="figures/bucket-iam.svg" alt="Bucket and guest-list gate: guest list restricted, bucket gated" />
+            </div>
+            <p class="caption">Who is on the guest list decides who can open the bucket.</p>
+            <aside class="notes">
+              Operate the control to show an allowed visitor and a blocked visitor. The readout follows the
+              same state as the figure, so the visible change and the label agree.
+            </aside>
+          </section>
+        </section>
+
+        <section data-segment="find" data-duration="15" data-title="Find the problems">
+          <section>
+            <h2>3 · Find the problems <span class="duration">15 min</span></h2>
+            <p class="key-message">Ask Gemini 4 to review the starter repo in plain language</p>
+            <aside class="notes">
+              Open starter/ in Antigravity CLI. Prompt 1 comes from the participant guide: ask Gemini 4 to
+              review Terraform and Go code and explain risks simply.
+            </aside>
+          </section>
+          <section>
+            <h3>Prompt 1 — review, do not fix yet</h3>
+            <p>Open <code>starter/</code> in Antigravity CLI and ask Gemini 4 to review the Terraform and Go code and explain the risks in plain language.</p>
+            <p class="hint">Optional 60-second Security Command Center screenshot — the lab does not depend on it.</p>
+            <aside class="notes">
+              Keep the lab independent of Security Command Center tiers and detectors. The screenshot is a
+              demo only; nobody's progress depends on seeing it.
+            </aside>
+          </section>
+        </section>
+
+        <section data-segment="fix-1" data-duration="20" data-title="Fix 1 — bucket and permissions">
+          <section>
+            <h2>4 · Fix 1 — bucket and permissions <span class="duration">20 min</span></h2>
+            <p class="key-message">Make the bucket private and reduce the permission</p>
+            <aside class="notes">
+              Prompt 2 asks Gemini 4 for the smallest Terraform edit. Edit terraform/main.tf, run plan, then
+              apply. Checkpoint: the bucket is no longer public.
+            </aside>
+          </section>
+          <section>
+            <h3>Smallest Terraform edit</h3>
+            <p>Ask Gemini 4 for the smallest edit that makes the bucket private and reduces the permission.</p>
+            <pre><code>make plan   # inspect before changing
+make apply  # create / update the lab resources</code></pre>
+            <p class="hint">Use <code>task</code> or <code>.\Setup.ps1</code> on other platforms.</p>
+            <aside class="notes">
+              plan is read-only. apply changes GCP resources and is available to everyone; state that before
+              running it. Keep the edit to Terraform source only.
+            </aside>
+          </section>
+          <section>
+            <h3>See it: public bucket and permission</h3>
+            <div class="figure-frame" data-prevent-swipe>
+              <iframe src="figures/public-bucket.html?embed" title="Interactive bucket access figure" data-prevent-swipe loading="eager"></iframe>
+              <img class="figure-poster" src="figures/public-bucket.svg" alt="Bucket access gate: private bucket with reduced permission" />
+            </div>
+            <p class="caption">Before: public bucket and a wide permission. After: private bucket, narrower permission.</p>
+            <aside class="notes">
+              Move the control from before to after. Point out that the guest list shrinks at the same time
+              the bucket stops being public; both changes are part of fix one.
+            </aside>
+          </section>
+          <section>
+            <h3>Checkpoint</h3>
+            <p class="checkpoint">The bucket is no longer public.</p>
+            <aside class="notes">
+              Confirm the checkpoint before moving on. If it has not changed, go back to plan and the Terraform
+              edit rather than starting fix two.
+            </aside>
+          </section>
+        </section>
+
+        <section data-segment="fix-2" data-duration="15" data-title="Fix 2 — app credential and input">
+          <section>
+            <h2>5 · Fix 2 — app credential and input <span class="duration">15 min</span></h2>
+            <p class="key-message">Remove the hardcoded key and validate the file name</p>
+            <aside class="notes">
+              Prompt 3 asks Gemini 4 about the hardcoded key and unsanitized file name. Edit app/main.go,
+              redeploy, smoke test. Checkpoint: no hardcoded key; unsafe name rejected.
+            </aside>
+          </section>
+          <section>
+            <h3>Ask about the app</h3>
+            <p>Ask Gemini 4 why a key in source is unsafe and how a file name could escape the bucket folder.</p>
+            <p>Edit <code>app/main.go</code>, redeploy, then smoke test.</p>
+            <aside class="notes">
+              Keep the app fix to Go source: replace the hardcoded credential and validate the object name.
+              No new billable resource is needed.
+            </aside>
+          </section>
+          <section>
+            <h3>See it: key in code and unsafe name</h3>
+            <div class="figure-frame" data-prevent-swipe>
+              <iframe src="figures/hardcoded-key.html?embed" title="Interactive hardcoded credential figure" data-prevent-swipe loading="eager"></iframe>
+              <img class="figure-poster" src="figures/hardcoded-key.svg" alt="Credential safe and name gate: key removed, unsafe name rejected" />
+            </div>
+            <p class="caption">Before: a key under the mat and an unchecked name. After: a checked request and no key in code.</p>
+            <aside class="notes">
+              Move the control from before to after and read the change aloud: the credential is no longer in
+              source, and a name that tries to escape is rejected.
+            </aside>
+          </section>
+          <section>
+            <h3>Checkpoint</h3>
+            <p class="checkpoint">No hardcoded key; unsafe name rejected.</p>
+            <aside class="notes">
+              Both parts of the checkpoint must hold before the group moves to verification.
+            </aside>
+          </section>
+        </section>
+
+        <section data-segment="verify" data-duration="10" data-title="Verify">
+          <section>
+            <h2>6 · Verify <span class="duration">10 min</span></h2>
+            <p class="key-message">Use <code>gcloud</code> and the app to prove both fixes worked</p>
+            <aside class="notes">
+              Run the gcloud verification commands from the participant guide. Record before/after evidence
+              in the tables.
+            </aside>
+          </section>
+          <section>
+            <h3>Evidence, not assumptions</h3>
+            <p>Inspect the bucket, IAM policy, and Cloud Run service with <code>gcloud</code> CLI or MCP.</p>
+            <p>Smoke test the app and record before/after evidence in the guide's tables.</p>
+            <aside class="notes">
+              gcloud CLI works as a fallback if MCP/ADC is unavailable. Each fix needs a recorded observation,
+              not just a claim that the edit was applied.
+            </aside>
+          </section>
+        </section>
+
+        <section data-segment="recap" data-duration="10" data-title="Recap and teardown">
+          <section>
+            <h2>7 · Recap and teardown <span class="duration">10 min</span></h2>
+            <p class="key-message">What changed, why, and run <code>destroy</code></p>
+            <aside class="notes">
+              Recap: two fixes, one idea — least access and no secrets in code. Run destroy. Confirm with
+              doctor that nothing remains.
+            </aside>
+          </section>
+          <section>
+            <h3>Two fixes, one idea</h3>
+            <ul>
+              <li>Least access: the bucket is private and the permission is narrower.</li>
+              <li>No secrets in code: the credential is removed and the file name is checked.</li>
+            </ul>
+            <pre><code>make destroy   # or: task destroy / .\Setup.ps1 destroy
+make doctor    # confirm nothing remains</code></pre>
+            <aside class="notes">
+              destroy removes the lab resources and is available to everyone. Finish with doctor so the room
+              can see a clean environment; remind participants that Gemini 4 needs a separate subscription.
+            </aside>
+          </section>
+        </section>
+      </div>
+    </div>
+    <script src="vendor/reveal.js"></script>
+    <script src="vendor/plugin/notes/notes.js"></script>
+    <script>
+      Reveal.initialize({
+        hash: true,
+        slideNumber: true,
+        transition: "none",
+        plugins: [RevealNotes],
+      });
+    </script>
+  </body>
+</html>
