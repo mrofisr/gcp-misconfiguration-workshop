@@ -1,21 +1,22 @@
+> **Facilitators only — participants do not need this file.**
+
 # Facilitator guide — 90 minutes
 
-Run the [slide outline](slides/outline.md) and let participants use the [participant guide](participant-lab-guide.md). This guide covers what you do before, during, and after.
+Run the [slide outline](../slides/outline.md) and let participants use the [participant guide](participant-lab-guide.md). This guide covers what you do before, during, and after.
 
 ## Before the session — preflight
 
-Run `doctor` on each prepared environment from `workshop/starter`:
+Run `doctor` on each prepared environment from `workshop/vulnerable-starter`:
 
 | Platform | Command |
 |---|---|
 | macOS / Linux | `make doctor` |
-| Any platform with go-task | `task doctor` |
-| Windows PowerShell | `.\Setup.ps1 -Command doctor` |
+| Windows PowerShell | `.\setup-windows.ps1 -Command doctor` |
 
 Checklist (each item must pass or have a documented workaround):
 
-- [ ] `PROJECT_ID` is set in `starter/.env` and belongs to the organizer.
-- [ ] Billing is enabled on the project and the $5 credit is present.
+- [ ] `PROJECT_ID` is set in `vulnerable-starter/.env` and belongs to the organizer.
+- [ ] Billing is enabled on the lab project and the $5 credit is present.
 - [ ] `gcloud`, `terraform`, `go`, `make` are installed; `agy` is available for the 10-minute setup step.
 - [ ] `gcloud auth application-default login` has been done.
 - [ ] The bucket and Cloud Run service exist (run `apply` beforehand if not).
@@ -36,19 +37,19 @@ Checklist (each item must pass or have a documented workaround):
 
 | Symptom | Remediation |
 |---|---|
-| `doctor` says PROJECT_ID is empty | Copy `starter/.env.example` to `starter/.env` and set the organizer's project ID. |
+| `doctor` says PROJECT_ID is empty | Copy `vulnerable-vulnerable-starter/.env.example` to `vulnerable-starter/.env` and set the organizer's project ID. |
 | `doctor` says gcloud has no active account | Run `gcloud auth login`, or use the organizer's prepared credentials. |
 | `doctor` says ADC is missing | Run `gcloud auth application-default login` and re-run `doctor`. |
-| `/mcp list` shows no servers | Copy `starter/.agents/mcp_config.json` to `~/.gemini/config/mcp_config.json`, restart `agy`, then re-check. |
+| `/mcp list` shows no servers | Copy `vulnerable-starter/.agents/mcp_config.json` to `~/.gemini/config/mcp_config.json`, restart `agy`, then re-check. |
 | `plan` fails with a permissions error | Confirm the account has `roles/editor` or equivalent on the lab project. |
-| `apply` fails on Cloud Build | Check billing is enabled and the Cloud Build API is available in the project. |
+| `apply` fails on Cloud Build | Check billing is enabled and the Cloud Build API is available in the lab project. |
 | App returns 404 for a file | The app falls back to ADC; confirm the service account can read the bucket and the object exists. |
 | Participant has no Gemini 4 access | Let them follow on screen; the facilitator runs the three prompts and shows the edits. |
 | `destroy` leaves a resource | Re-run `destroy` (it is idempotent), then check Terraform state and the Cloud Run service list. |
 
 ## Optional Security Command Center demo (60 seconds, not required)
 
-Show a findings view if the project has one, then say explicitly: "We are not using this today; everything we do works without it."
+Show a findings view if the lab project has one, then say explicitly: "We are not using this today; everything we do works without it."
 
 Console path: **Security → Security Command Center → Findings**. If no findings or no access, skip it. Participant progress never depends on SCC tier, detector availability, or console navigation.
 
@@ -61,7 +62,7 @@ Console path: **Security → Security Command Center → Findings**. If no findi
 | Terraform | Local planning and apply | Free, open source |
 | Cloud Run | Go + HTMX app | Scale-to-zero: min 0, max 1, 256 Mi memory. Requests are the only possible charge |
 | gcloud CLI / MCP servers | Inspection and deployment | No charge |
-| GNU Make / go-task / PowerShell | Command surfaces | Free, local tools |
+| GNU Make / PowerShell | Command surfaces | Free, local tools |
 | Gemini 4 via Antigravity CLI | Three review/fix prompts | **Google AI subscription — separate from the $5 GCP credit** |
 | Security Command Center | Optional demo only | Standard tier has a free option; not on the participant path |
 

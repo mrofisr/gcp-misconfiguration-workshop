@@ -3,8 +3,9 @@
 set -euo pipefail
 source "$(dirname "${BASH_SOURCE[0]}")/common.sh"
 
-require_project
-log_info "apply: this CREATES a public bucket, a broad permission, a key, and a Cloud Run service in $PROJECT_ID"
+require_lab_project
+confirm_project "create" "creates a public bucket, a broad permission, a key, and a Cloud Run service in the lab project"
+
 log_info "apply: project=$PROJECT_ID region=$REGION prefix=$PREFIX memory=$MEMORY"
 
 terraform -chdir="$TERRAFORM_DIR" init -input=false

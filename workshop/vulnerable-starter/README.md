@@ -1,12 +1,15 @@
 # Vulnerable starter repository
 
+> **Danger: this code is deliberately insecure. Only deploy it into the lab project — never your own project.**
+
 This repository is **deliberately insecure**. It is the starting point for the workshop. Do not deploy it outside the lab project.
 
 It contains:
 
 - `terraform/` — creates a Cloud Storage bucket, public access, a robot user (service account), a very broad permission, and a downloadable key.
 - `app/` — a small Go + HTMX page that lists files in the bucket and opens a file by name.
-- `Makefile`, `Taskfile.yaml`, `Setup.ps1` — the same four commands on every platform: `doctor`, `plan`, `apply`, `destroy`.
+- `Makefile` (macOS/Linux) and `setup-windows.ps1` (Windows) — the same four commands on every platform: `doctor`, `plan`, `apply`, `destroy`.
+- `.agents/` — the Antigravity MCP configuration. Copy `mcp_config.json` to `~/.gemini/config/` during setup; it contains no credentials.
 
 ## The vulnerabilities you will find
 
@@ -33,4 +36,4 @@ cd app && gofmt -l . && go build ./...
 
 ## Configuration
 
-Copy `.env.example` to `.env` and fill in the project ID provided by the organizer. The command layer reads that file and passes values to Terraform and Cloud Run. No credential is stored in `.env`.
+Copy `.env.example` to `.env` and fill in the lab project ID provided by the organizer. The command layer reads that file and passes values to Terraform and Cloud Run. No credential is stored in `.env`.

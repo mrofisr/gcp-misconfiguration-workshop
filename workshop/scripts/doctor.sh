@@ -9,7 +9,6 @@ check_cmd terraform
 check_cmd go
 check_cmd make
 if have_cmd agy; then log_ok "Antigravity CLI is installed"; else log_warn "agy is missing; install it in the first 10 minutes"; fi
-if have_cmd task; then log_ok "go-task is installed"; else log_warn "task is optional; make and Setup.ps1 also work"; fi
 
 log_info "doctor: checking Google Cloud access"
 check_project

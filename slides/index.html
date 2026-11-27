@@ -21,7 +21,7 @@
             <tbody>
               <tr><td>1</td><td>10 min</td><td>Setup</td><td>Install and sign in to Antigravity CLI; run <code>doctor</code></td></tr>
               <tr><td>2</td><td>10 min</td><td>Plain-language intro</td><td>A bucket is a folder in the cloud; IAM is who may open it</td></tr>
-              <tr><td>3</td><td>15 min</td><td>Find the problems</td><td>Ask Gemini 4 to review the starter repo in plain language</td></tr>
+              <tr><td>3</td><td>15 min</td><td>Find the problems</td><td>Ask Gemini 4 to review the vulnerable starter repo in plain language</td></tr>
               <tr><td>4</td><td>20 min</td><td>Fix 1 — bucket and permissions</td><td>Make the bucket private and reduce the permission</td></tr>
               <tr><td>5</td><td>15 min</td><td>Fix 2 — app credential and input</td><td>Remove the hardcoded key and validate the file name</td></tr>
               <tr><td>6</td><td>10 min</td><td>Verify</td><td>Use <code>gcloud</code> and the app to prove both fixes worked</td></tr>
@@ -42,20 +42,19 @@
             <p class="key-message">Install and sign in to Antigravity CLI; run <code>doctor</code></p>
             <aside class="notes">
               Show the three platform command forms. Participants run doctor. Expected: tool checks pass;
-              cloud checks pass in the prepared project. If a check fails, use the facilitator guide
+              cloud checks pass in the prepared lab project. If a check fails, use the facilitator guide
               troubleshooting table.
             </aside>
           </section>
           <section>
-            <h3>Three command forms, one result</h3>
+            <h3>One command form per platform</h3>
             <pre><code>make doctor        # macOS / Linux
-task doctor        # any platform with go-task
-.\Setup.ps1 doctor # Windows PowerShell</code></pre>
-            <p>Expected: tool checks pass and cloud checks pass in the prepared project.</p>
+.\setup-windows.ps1 doctor # Windows PowerShell</code></pre>
+            <p>Expected: tool checks pass and cloud checks pass in the prepared lab project.</p>
             <p class="hint">If a check fails → facilitator guide troubleshooting table.</p>
             <aside class="notes">
               All four commands are available to everyone. doctor is read-only. The first Windows run of
-              Setup.ps1 also installs prerequisites; that is why setup owns the first ten minutes.
+              setup-windows.ps1 also installs prerequisites; that is why setup owns the first ten minutes.
             </aside>
           </section>
         </section>
@@ -99,15 +98,15 @@ task doctor        # any platform with go-task
         <section data-segment="find" data-duration="15" data-title="Find the problems">
           <section>
             <h2>3 · Find the problems <span class="duration">15 min</span></h2>
-            <p class="key-message">Ask Gemini 4 to review the starter repo in plain language</p>
+            <p class="key-message">Ask Gemini 4 to review the vulnerable starter repo in plain language</p>
             <aside class="notes">
-              Open starter/ in Antigravity CLI. Prompt 1 comes from the participant guide: ask Gemini 4 to
+              Open vulnerable-starter/ in Antigravity CLI. Prompt 1 comes from the participant guide: ask Gemini 4 to
               review Terraform and Go code and explain risks simply.
             </aside>
           </section>
           <section>
             <h3>Prompt 1 — review, do not fix yet</h3>
-            <p>Open <code>starter/</code> in Antigravity CLI and ask Gemini 4 to review the Terraform and Go code and explain the risks in plain language.</p>
+            <p>Open <code>vulnerable-starter/</code> in Antigravity CLI and ask Gemini 4 to review the Terraform and Go code and explain the risks in plain language.</p>
             <p class="hint">Optional 60-second Security Command Center screenshot — the lab does not depend on it.</p>
             <aside class="notes">
               Keep the lab independent of Security Command Center tiers and detectors. The screenshot is a
@@ -130,7 +129,7 @@ task doctor        # any platform with go-task
             <p>Ask Gemini 4 for the smallest edit that makes the bucket private and reduces the permission.</p>
             <pre><code>make plan   # inspect before changing
 make apply  # create / update the lab resources</code></pre>
-            <p class="hint">Use <code>task</code> or <code>.\Setup.ps1</code> on other platforms.</p>
+            <p class="hint">Use <code>.\setup-windows.ps1</code> on Windows.</p>
             <aside class="notes">
               plan is read-only. apply changes GCP resources and is available to everyone; state that before
               running it. Keep the edit to Terraform source only.
@@ -232,7 +231,7 @@ make apply  # create / update the lab resources</code></pre>
               <li>Least access: the bucket is private and the permission is narrower.</li>
               <li>No secrets in code: the credential is removed and the file name is checked.</li>
             </ul>
-            <pre><code>make destroy   # or: task destroy / .\Setup.ps1 destroy
+            <pre><code>make destroy   # Windows: .\setup-windows.ps1 -Command destroy
 make doctor    # confirm nothing remains</code></pre>
             <aside class="notes">
               destroy removes the lab resources and is available to everyone. Finish with doctor so the room

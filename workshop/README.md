@@ -4,7 +4,7 @@ A 90-minute, hands-on workshop for people who have never used cloud before. You 
 
 ## What you need
 
-Nothing from Google Cloud. The organizer gives you a ready project and a checkout of this repository. Bring a laptop with internet access.
+Nothing from Google Cloud. The organizer gives you a ready **lab project** and a checkout of this repository. Bring a laptop with internet access.
 
 The first 10 minutes are for installing and signing in to the Antigravity CLI. Everything else is already prepared.
 
@@ -14,7 +14,7 @@ Each objective is practiced in a specific lab step.
 
 | Objective | Lab step |
 |---|---|
-| Say what a cloud bucket and an IAM permission are in plain language | `slides/outline.md`, segment 2; `glossary.md` |
+| Say what a cloud bucket and an IAM permission are in plain language | `../slides/outline.md`, segment 2; `glossary.md` |
 | Run the platform setup check (`doctor`) and read its result | `participant-lab-guide.md`, step 1 |
 | Ask Gemini 4 to review code and explain a security problem simply | `participant-lab-guide.md`, step 2 (prompt 1) |
 | Inspect a live bucket, IAM policy, and Cloud Run service with `gcloud` | `participant-lab-guide.md`, step 3 |
@@ -24,7 +24,7 @@ Each objective is practiced in a specific lab step.
 
 ## Cost and access
 
-- The Google Cloud project and its **$5 credit** belong to the organizer. You do not create a billing account, project, or API.
+- The **lab project** and its **$5 credit** belong to the organizer. You do not create a billing account, project, or API.
 - The app runs on **Cloud Run with scale-to-zero** (minimum 0 instances, maximum 1). It is deleted at the end.
 - **Gemini 4 in Antigravity requires a Google AI subscription.** That is separate from the $5 Google Cloud credit and is not paid from it. If you do not have access, the facilitator will demonstrate the prompts.
 
@@ -33,8 +33,8 @@ Each objective is practiced in a specific lab step.
 - [Participant lab guide](participant-lab-guide.md) — the steps you follow in the session.
 - [Facilitator guide](facilitator-guide.md) — setup, preflight, troubleshooting, and the optional Security Command Center demo.
 - [Plain-language glossary](glossary.md) — read this first if a word is unfamiliar.
-- [Slide outline](slides/outline.md) — the 90-minute agenda.
-- [Vulnerable starter repository](starter/README.md) — the code you will inherit and repair.
+- [Slide outline](../slides/outline.md) — the 90-minute agenda.
+- [Vulnerable starter repository](vulnerable-starter/README.md) — the code you will inherit and repair.
 
 ## Commands on every platform
 
@@ -47,8 +47,13 @@ All four commands are available to everyone:
 | `apply` | Creates the deliberately vulnerable lab resources | Yes |
 | `destroy` | Removes the lab resources | Yes |
 
-Use the form for your platform:
+There is one way to run each command on your platform:
 
-- macOS/Linux: `make doctor`, `make plan`, `make apply`, `make destroy`
-- Any platform with go-task: `task doctor`, `task plan`, `task apply`, `task destroy`
-- Windows PowerShell: `.\Setup.ps1 doctor` (first run also installs prerequisites)
+| Platform | How to run a command |
+| --- | --- |
+| macOS / Linux | From `workshop/vulnerable-starter`: `make doctor`, `make plan`, `make apply`, `make destroy` |
+| Windows PowerShell | From `workshop/vulnerable-starter`: `.\setup-windows.ps1 -Command doctor` (and likewise `plan`, `apply`, `destroy`). The first run installs prerequisites. |
+
+`make` and `setup-windows.ps1` both call the same scripts in `workshop/scripts/`. There is no separate `task` command.
+
+Facilitators can skip the typing prompt with `make apply ARGS=--yes` (or `.\setup-windows.ps1 -Command apply -Yes`). The lab project check still runs, and a wrong project always stops the command.

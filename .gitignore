@@ -3,6 +3,10 @@
 *.tfstate
 *.tfstate.*
 
+# Local value-bearing variable files (keep committed examples)
+*.tfvars
+!*.tfvars.example
+
 # Local environment overrides (keep the committed example)
 .env
 .env.*

@@ -31,7 +31,7 @@ Each figure SHALL provide a visible control that changes its state and a readout
 
 ### Requirement: Figure content accuracy
 
-Figure labels and numbers SHALL agree with `workshop/slides/outline.md` and the starter stack. No figure SHALL assert a behavior that the lab does not perform.
+Figure labels and numbers SHALL agree with `slides/outline.md` and the vulnerable starter stack. No figure SHALL assert a behavior that the lab does not perform.
 
 #### Scenario: Figure claims are checked
 

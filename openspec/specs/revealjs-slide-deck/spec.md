@@ -8,7 +8,7 @@ Defines the behavior of the workshop presentation deck: a locally runnable revea
 
 ### Requirement: Full agenda coverage
 
-The deck SHALL present all seven segments from `workshop/slides/outline.md` in their published order, showing each segment title and its allotted duration: setup 10, intro 10, find 15, fix one 20, fix two 15, verify 10, recap and teardown 10. The displayed durations SHALL total 90 minutes. The deck SHALL NOT add a new lab step or change a published duration.
+The deck SHALL present all seven segments from `slides/outline.md` in their published order, showing each segment title and its allotted duration: setup 10, intro 10, find 15, fix one 20, fix two 15, verify 10, recap and teardown 10. The displayed durations SHALL total 90 minutes. The deck SHALL NOT add a new lab step or change a published duration.
 
 #### Scenario: Deck opens on the agenda
 

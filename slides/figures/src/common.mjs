@@ -100,9 +100,11 @@ export function gauge(P, x, y, z, radius, angle = 0) {
   return out.join("");
 }
 
+const GENERATED_HEADER = "<!-- Generated from src/ — edit the .mjs, not this file. -->";
+
 export function writeFigure({ name, title, fig, hint, caption, keys, label, readout, P, art, moved, posterArt, live }) {
   const svg = k.figureSvg({ width: WIDTH, height: HEIGHT, label, body: art });
-  const poster = k.figureSvg({ width: WIDTH, height: HEIGHT, label, body: posterArt, standalone: "light" });
+  const poster = `${GENERATED_HEADER}\n${k.figureSvg({ width: WIDTH, height: HEIGHT, label, body: posterArt, standalone: "light" })}`;
   const frameStyle = `<style>.iso-page{margin:4px auto 8px;width:min(700px,100% - 12px)!important}body{font-size:12px}body[data-embed] .iso-page{margin:0 auto;width:min(540px,100% - 8px)!important}body[data-embed] .iso-legend,body[data-embed] .iso-plate-corner[data-corner="hint"]{display:none}body[data-embed] .iso-figure{margin:0}.iso-poster{display:none;width:100%;height:auto}@media print{.iso-stage{display:none}.iso-poster{display:block}}@media(prefers-reduced-motion:reduce){.iso-stage{display:none}.iso-poster{display:block}}</style><script>if(new URLSearchParams(location.search).has("embed"))document.body.setAttribute("data-embed","");</script>`;
   const body = k.plateHtml({
     fig,
@@ -113,7 +115,7 @@ export function writeFigure({ name, title, fig, hint, caption, keys, label, read
     caption,
     body: `${frameStyle}<div class="iso-stage" tabindex="0" role="slider" aria-label="${title}: use arrow keys or pointer to change state" aria-valuemin="0" aria-valuemax="1">${svg}</div><img class="iso-poster" src="${name}.svg" alt="${label}">`,
   });
-  writeFileSync(join(OUT, `${name}.html`), k.pageHtml({ title, theme: "light", width: 760, body, script: kitScript() + live }));
+  writeFileSync(join(OUT, `${name}.html`), `${GENERATED_HEADER}\n${k.pageHtml({ title, theme: "light", width: 760, body, script: kitScript() + live })}`);
   writeFileSync(join(OUT, `${name}.svg`), poster);
   console.log(`wrote ${name}.html and ${name}.svg`);
 }

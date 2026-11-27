@@ -1,15 +1,15 @@
 # Participant lab guide — 90 minutes
 
-You do **not** need a Google Cloud account, billing, or any setup done by you. The organizer gives you a ready project and this repository. If a word is new, check the [glossary](glossary.md).
+You do **not** need a Google Cloud account, billing, or any setup done by you. The organizer gives you a ready **lab project** and this repository. If a word is new, check the [glossary](glossary.md).
 
 > **Cost note:** The $5 Google Cloud credit belongs to the organizer. **Gemini 4 in Antigravity needs a Google AI subscription** — it is not paid from that credit. If you do not have it, watch the facilitator's prompts.
 
 ## Before you start
 
-Copy the configuration and fill in the project ID the facilitator gives you:
+Copy the configuration and fill in your **lab project** ID — the one the facilitator gives you:
 
 ```sh
-cd workshop/starter
+cd workshop/vulnerable-starter
 cp .env.example .env
 # edit .env: set PROJECT_ID=the-project-id-you-were-given
 set -a; . ./.env; set +a
@@ -27,17 +27,16 @@ curl -fsSL https://antigravity.google/cli/install.sh | bash
 gcloud auth application-default login
 ```
 
-On Windows PowerShell, run `.\Setup.ps1` — it installs the tools and then runs `doctor`.
+On Windows PowerShell, run `.\setup-windows.ps1` — it installs the tools and then runs `doctor`.
 
-Connect the AI assistant to Google Cloud tools. Copy `starter/.agents/mcp_config.json` to `~/.gemini/config/mcp_config.json`, then start `agy` and type `/mcp list`. You should see `gemini-cloud-assist` and `application-design-center`.
+Connect the AI assistant to Google Cloud tools. Copy `vulnerable-starter/.agents/mcp_config.json` to `~/.gemini/config/mcp_config.json`, then start `agy` and type `/mcp list`. You should see `gemini-cloud-assist` and `application-design-center`.
 
 Run the check for your platform:
 
 | Platform | Command |
 |---|---|
-| macOS / Linux | `cd workshop/starter && make doctor` |
-| Any platform with go-task | `cd workshop/starter && task doctor` |
-| Windows PowerShell | `.\Setup.ps1 -Command doctor` |
+| macOS / Linux | `cd workshop/vulnerable-starter && make doctor` |
+| Windows PowerShell | `.\setup-windows.ps1 -Command doctor` |
 
 **Expected:** every `PASS` line; warnings about `agy` only if you skipped install. If a `FAIL` line appears, use the [facilitator guide](facilitator-guide.md#troubleshooting) or raise your hand.
 
@@ -45,10 +44,10 @@ Run the check for your platform:
 
 ## Step 2 — Find the problems with Gemini 4 (15 minutes)
 
-Start the assistant from the starter folder:
+Start the assistant from the vulnerable-starter folder:
 
 ```sh
-cd workshop/starter
+cd workshop/vulnerable-starter
 agy
 ```
 
@@ -79,15 +78,14 @@ echo "App URL: $APP_URL"
 
 **Prompt 2 — smallest safe Terraform edit**
 
-> Make the smallest possible edit to terraform/main.tf so the bucket cannot be public, nobody outside the project can read it, and the app's service account only gets the access it needs. Explain each change in one sentence. Do not run apply.
+> Make the smallest possible edit to terraform/main.tf so the bucket cannot be public, nobody outside the lab project can read it, and the app's service account only gets the access it needs. Explain each change in one sentence. Do not run apply.
 
 Review the diff (`/diff` in `agy`). Then apply:
 
 | Platform | Command |
 |---|---|
 | macOS / Linux | `make plan` then `make apply` |
-| Any platform with go-task | `task plan` then `task apply` |
-| Windows PowerShell | `.\Setup.ps1 -Command plan` then `-Command apply` |
+| Windows PowerShell | `.\setup-windows.ps1 -Command plan` then `-Command apply` |
 
 **Expected:** `plan` shows changes; `apply` finishes without errors.
 
@@ -121,8 +119,7 @@ Run the command for your platform:
 | Platform | Command |
 |---|---|
 | macOS / Linux | `make destroy` |
-| Any platform with go-task | `task destroy` |
-| Windows PowerShell | `.\Setup.ps1 -Command destroy` |
+| Windows PowerShell | `.\setup-windows.ps1 -Command destroy` |
 
 **Checkpoint 5:** `doctor` shows no bucket or service, and the facilitator records spend against the $5 ceiling.
 

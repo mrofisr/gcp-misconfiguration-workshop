@@ -10,7 +10,7 @@ import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-OUTLINE = HERE.parent / "workshop" / "slides" / "outline.md"
+OUTLINE = HERE / "outline.md"
 DECK = Path(sys.argv[1]) if len(sys.argv) > 1 else HERE / "index.html"
 
 
@@ -64,7 +64,7 @@ def main():
         problems.append("deck durations do not total 90 minutes")
 
     if problems:
-        print("FAIL: deck does not match workshop/slides/outline.md")
+        print("FAIL: deck does not match slides/outline.md")
         for problem in problems:
             print(f"  - {problem}")
         return 1

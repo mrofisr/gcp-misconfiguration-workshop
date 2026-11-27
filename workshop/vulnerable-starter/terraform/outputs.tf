@@ -9,6 +9,6 @@ output "service_account_email" {
 }
 
 output "service_name" {
-  description = "Name of the Cloud Run service used by the starter app."
+  description = "Name of the Cloud Run service used by the vulnerable starter app."
   value       = "${var.prefix}-files"
 }

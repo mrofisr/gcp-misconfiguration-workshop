@@ -3,14 +3,14 @@
 
 SCRIPTS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WORKSHOP_DIR="$(cd "$SCRIPTS_DIR/.." && pwd)"
-STARTER_DIR="$WORKSHOP_DIR/starter"
-TERRAFORM_DIR="$STARTER_DIR/terraform"
-APP_DIR="$STARTER_DIR/app"
+VULNERABLE_STARTER_DIR="$WORKSHOP_DIR/vulnerable-starter"
+TERRAFORM_DIR="$VULNERABLE_STARTER_DIR/terraform"
+APP_DIR="$VULNERABLE_STARTER_DIR/app"
 
-if [ -f "$STARTER_DIR/.env" ]; then
+if [ -f "$VULNERABLE_STARTER_DIR/.env" ]; then
   set -a
   # shellcheck disable=SC1091
-  . "$STARTER_DIR/.env"
+  . "$VULNERABLE_STARTER_DIR/.env"
   set +a
 fi
 
@@ -26,6 +26,13 @@ export TF_VAR_prefix="$PREFIX"
 export TF_VAR_region="$REGION"
 
 FAILURES=0
+ASSUME_YES=0
+for arg in "$@"; do
+  case "$arg" in
+    --yes) ASSUME_YES=1 ;;
+    *) printf 'FAIL  Unknown option: %s. Supported option: --yes\n' "$arg" >&2; exit 1 ;;
+  esac
+done
 
 log_info() { printf 'INFO  %s\n' "$*"; }
 log_ok() { printf 'PASS  %s\n' "$*"; }
@@ -38,25 +45,25 @@ check_cmd() {
   if have_cmd "$1"; then
     log_ok "$1 is installed"
   else
-    log_fail "$1 is missing"
+    log_fail "$1 is missing; install it and re-run doctor"
   fi
 }
 
 check_project() {
   if [ -n "$PROJECT_ID" ]; then
-    log_ok "PROJECT_ID is set to $PROJECT_ID"
+    log_ok "Lab project is set to $PROJECT_ID"
   else
-    log_fail "PROJECT_ID is empty; copy starter/.env.example to starter/.env and fill it in"
+    log_fail "Lab project is empty; copy vulnerable-starter/.env.example to vulnerable-starter/.env and set PROJECT_ID"
   fi
 }
 
 check_auth() {
   local account
-  account="$(gcloud auth list --filter=disabled:false --format='value(account)' 2>/dev/null | head -n1)"
+  account="$(gcloud auth list --filter=disabled:false --format='value(account)' 2>/dev/null | head -n1 || true)"
   if [ -n "$account" ]; then
     log_ok "gcloud is signed in as $account"
   else
-    log_fail "gcloud has no active account; run: gcloud auth login"
+    log_fail "Not logged in. Run: gcloud auth login"
   fi
 }
 
@@ -72,9 +79,9 @@ check_billing() {
   local enabled
   enabled="$(gcloud beta billing projects describe "$PROJECT_ID" --format='value(billingEnabled)' 2>/dev/null || true)"
   if [ "$enabled" = "True" ]; then
-    log_ok "project $PROJECT_ID has billing enabled"
+    log_ok "lab project $PROJECT_ID has billing enabled"
   else
-    log_fail "project $PROJECT_ID has no billing enabled (or billing info is unavailable)"
+    log_fail "lab project $PROJECT_ID has no billing enabled (or billing info is unavailable); check the lab project in the organizer's sheet"
   fi
 }
 
@@ -103,9 +110,48 @@ check_mcp_config() {
   fi
 }
 
-require_project() {
+require_configured_project() {
   if [ -z "$PROJECT_ID" ]; then
-    log_fail "PROJECT_ID is empty; copy starter/.env.example to starter/.env first"
+    log_fail "Lab project is not configured. Copy vulnerable-starter/.env.example to vulnerable-starter/.env and set PROJECT_ID to your lab project, then re-run."
+    exit 1
+  fi
+}
+
+require_lab_project() {
+  require_configured_project
+  if ! have_cmd gcloud; then
+    log_fail "gcloud is not installed. Install the Google Cloud CLI: https://cloud.google.com/sdk/docs/install"
+    exit 1
+  fi
+  local account active
+  account="$(gcloud auth list --filter=disabled:false --format='value(account)' 2>/dev/null | head -n1 || true)"
+  if [ -z "$account" ]; then
+    log_fail "Not logged in. Run: gcloud auth login"
+    exit 1
+  fi
+  active="$(gcloud config get-value project 2>/dev/null || true)"
+  if [ "$active" != "$PROJECT_ID" ]; then
+    log_fail "gcloud is using '$active' but the lab project is '$PROJECT_ID'. Run: gcloud config set project $PROJECT_ID"
+    exit 1
+  fi
+  log_ok "Lab project confirmed: $PROJECT_ID"
+}
+
+confirm_project() {
+  local action="$1" effect="$2" answer=""
+  printf 'About to %s in lab project %s (region %s, prefix %s).\n' "$action" "$PROJECT_ID" "$REGION" "$PREFIX"
+  printf 'Effect: %s\n' "$effect"
+  printf 'Cost note: uses the organizer-provided lab project; Cloud Run scales to zero and is removed at teardown.\n'
+  if [ "$ASSUME_YES" -eq 1 ]; then
+    log_warn "--yes: typing prompt skipped; the lab project check still applied"
+    return 0
+  fi
+  printf 'Type the lab project ID to continue: '
+  if ! read -r answer; then
+    answer=""
+  fi
+  if [ "$answer" != "$PROJECT_ID" ]; then
+    log_info "Cancelled. Nothing was changed."
     exit 1
   fi
 }

@@ -7,6 +7,7 @@ Read this first. Every word used in the lab is explained here in everyday langua
 | **Cloud** | Computers and storage that belong to someone else (Google) and that you rent by the minute. | Intro |
 | **Google Cloud / GCP** | Google's version of the cloud. It is the place that holds your bucket and app. | Intro |
 | **Project** | The container that holds everything for this lab. The organizer already made it. | Setup |
+| **Lab project** | The Google Cloud project the organizer prepared for you. Every command and check in this lab uses it — never your own project. | Setup, every step |
 | **Bucket** | A folder in Google Cloud where files live. "Cloud Storage bucket" is the full name. | Fix 1 |
 | **Public bucket** | A folder anyone on the internet can open. In this lab that is a mistake you will fix. | Fix 1 |
 | **IAM** | "Who is allowed to do what." Like a guest list for the cloud. | Fix 1 |

@@ -1,6 +1,6 @@
 # Workshop slide deck
 
-A reveal.js presentation for the 90-minute workshop. It lives in a top-level `slides/` directory and is derived from [`workshop/slides/outline.md`](../workshop/slides/outline.md), which remains the authoritative agenda.
+A reveal.js presentation for the 90-minute workshop. It lives in a top-level `slides/` directory and is derived from [`slides/outline.md`](outline.md), which remains the authoritative agenda.
 
 The deck needs no build step, npm install, or internet access at presentation time. reveal.js and the three interactive figures are committed here.
 
@@ -8,7 +8,7 @@ The deck needs no build step, npm install, or internet access at presentation ti
 
 - `index.html` — the presentation, one top-level slide per agenda segment with vertical detail slides.
 - `slides.css` — Google Sans font stack, slide layout, figure embeds, print and reduced-motion rules.
-- `vendor/` — pinned **reveal.js 6.0.2** (`reveal.css`, `reveal.js`, the `simple` light theme, the notes plugin, and its MIT license). The theme's two Google Fonts `@import` rules were removed so the deck makes no external font request.
+- `vendor/` — pinned **reveal.js 6.0.2** (`reveal.css`, `reveal.js`, the `simple` light theme, the notes plugin, and its MIT license). This is **third-party code with its own license — do not edit it**. The theme's two Google Fonts `@import` rules were removed so the deck makes no external font request.
 - `figures/` — three standalone Anatomy HTML figures and their static SVG posters: `bucket-iam`, `public-bucket`, `hardcoded-key`.
 - `figures/src/` — the build scripts, a shared helper module, and the Anatomy kit copied from the skill so figures can be regenerated from a fresh checkout.
 - `check-outline.py` — checks that slide titles, durations, and order still match the outline.
@@ -47,7 +47,7 @@ Then use the browser print dialog, enable **Background graphics**, and save as P
 python3 slides/check-outline.py
 ```
 
-It prints the seven segments and confirms they total 90 minutes. Pass another file path to check a modified deck, for example `python3 slides/check-outline.py /tmp/deck.html`; it exits non-zero when a title, order, or duration has drifted from `workshop/slides/outline.md`.
+It prints the seven segments and confirms they total 90 minutes. Pass another file path to check a modified deck, for example `python3 slides/check-outline.py /tmp/deck.html`; it exits non-zero when a title, order, or duration has drifted from `slides/outline.md`.
 
 ## Regenerate the Anatomy figures
 
