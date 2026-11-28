@@ -74,7 +74,8 @@ Facilitators can skip the typing prompt with `make apply ARGS=--yes` (or `.\setu
 | `app/` | The Go + HTMX lab application | Participants |
 | `terraform/` | The deliberately vulnerable infrastructure | Participants |
 | `scripts/` | The shared implementation of `doctor`, `plan`, `apply`, and `destroy` | Participants |
-| `openspec/` | Design history and specs for this repository. Tool convention; do not rename or move it | Maintainers |
+
+OpenSpec planning artifacts (`openspec/`) are local-only maintainer tooling. They are not tracked in this repository and are absent from clones.
 
 The facilitator slide deck and its agenda (`outline.md`) are not part of this source tree. They are maintained on the `gh-pages` branch, which publishes the deck; switch to that branch to present or edit it.
 
