@@ -2,15 +2,14 @@
 # Shared helpers for the four lab commands. Sourced by doctor/plan/apply/destroy.
 
 SCRIPTS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-WORKSHOP_DIR="$(cd "$SCRIPTS_DIR/.." && pwd)"
-VULNERABLE_STARTER_DIR="$WORKSHOP_DIR/vulnerable-starter"
-TERRAFORM_DIR="$VULNERABLE_STARTER_DIR/terraform"
-APP_DIR="$VULNERABLE_STARTER_DIR/app"
+PROJECT_ROOT="$(cd "$SCRIPTS_DIR/.." && pwd)"
+TERRAFORM_DIR="$PROJECT_ROOT/terraform"
+APP_DIR="$PROJECT_ROOT/app"
 
-if [ -f "$VULNERABLE_STARTER_DIR/.env" ]; then
+if [ -f "$PROJECT_ROOT/.env" ]; then
   set -a
   # shellcheck disable=SC1091
-  . "$VULNERABLE_STARTER_DIR/.env"
+  . "$PROJECT_ROOT/.env"
   set +a
 fi
 
@@ -53,7 +52,7 @@ check_project() {
   if [ -n "$PROJECT_ID" ]; then
     log_ok "Lab project is set to $PROJECT_ID"
   else
-    log_fail "Lab project is empty; copy vulnerable-starter/.env.example to vulnerable-starter/.env and set PROJECT_ID"
+    log_fail "Lab project is empty; copy .env.example to .env and set PROJECT_ID"
   fi
 }
 
@@ -112,7 +111,7 @@ check_mcp_config() {
 
 require_configured_project() {
   if [ -z "$PROJECT_ID" ]; then
-    log_fail "Lab project is not configured. Copy vulnerable-starter/.env.example to vulnerable-starter/.env and set PROJECT_ID to your lab project, then re-run."
+    log_fail "Lab project is not configured. Copy .env.example to .env and set PROJECT_ID to your lab project, then re-run."
     exit 1
   fi
 }

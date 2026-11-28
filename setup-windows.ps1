@@ -1,6 +1,6 @@
 <#
   Windows entry point. Bootstraps prerequisites, then delegates doctor, plan,
-  apply and destroy to the shared scripts in ..\scripts. There is no separate
+  apply and destroy to the shared scripts in scripts\. There is no separate
   Windows implementation of the four commands.
 
   Examples:
@@ -17,9 +17,8 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
-$StarterDir = $PSScriptRoot
-$WorkshopDir = Split-Path -Parent $StarterDir
-$ScriptsDir = Join-Path $WorkshopDir 'scripts'
+$ProjectRoot = $PSScriptRoot
+$ScriptsDir = Join-Path $ProjectRoot 'scripts'
 $Script = Join-Path $ScriptsDir "$Command.sh"
 
 function Write-Pass([string]$Message) { Write-Host "PASS  $Message" }
@@ -66,7 +65,7 @@ function Invoke-LabScript {
         exit $LASTEXITCODE
     }
 
-    Write-Fail 'bash not found. Install Git for Windows (https://git-scm.com/download/win) or enable WSL, then re-run. doctor, plan, apply and destroy are implemented only in ..\scripts.'
+    Write-Fail 'bash not found. Install Git for Windows (https://git-scm.com/download/win) or enable WSL, then re-run. doctor, plan, apply and destroy are implemented only in scripts\.'
     exit 1
 }
 

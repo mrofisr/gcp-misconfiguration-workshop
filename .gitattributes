@@ -1,0 +1,8 @@
+# Normalize text files to LF in the repository and in working trees.
+* text=auto eol=lf
+
+# Windows PowerShell entry point expects CRLF on checkout.
+*.ps1 text eol=crlf
+
+# Shell scripts must stay LF on every platform.
+*.sh text eol=lf

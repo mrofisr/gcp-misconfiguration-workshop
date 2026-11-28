@@ -1,4 +1,4 @@
-module workshop/vulnerable-starter/app
+module app
 
 go 1.22
 

@@ -1,6 +1,6 @@
-# macOS / Linux entry point. Every target delegates to the shared scripts in ../scripts.
+# macOS / Linux entry point. Every target delegates to the shared scripts in scripts/.
 # Use ARGS=--yes with apply or destroy to skip the typing prompt (the project guard still applies).
-SCRIPTS := ../scripts
+SCRIPTS := scripts
 ARGS ?=
 
 .PHONY: doctor plan apply destroy help

@@ -9,7 +9,7 @@ You do **not** need a Google Cloud account, billing, or any setup done by you. T
 Copy the configuration and fill in your **lab project** ID — the one the facilitator gives you:
 
 ```sh
-cd workshop/vulnerable-starter
+# From the repository root:
 cp .env.example .env
 # edit .env: set PROJECT_ID=the-project-id-you-were-given
 set -a; . ./.env; set +a
@@ -29,25 +29,24 @@ gcloud auth application-default login
 
 On Windows PowerShell, run `.\setup-windows.ps1` — it installs the tools and then runs `doctor`.
 
-Connect the AI assistant to Google Cloud tools. Copy `vulnerable-starter/.agents/mcp_config.json` to `~/.gemini/config/mcp_config.json`, then start `agy` and type `/mcp list`. You should see `gemini-cloud-assist` and `application-design-center`.
+Connect the AI assistant to Google Cloud tools. Copy `.agents/mcp_config.json` to `~/.gemini/config/mcp_config.json`, then start `agy` and type `/mcp list`. You should see `gemini-cloud-assist` and `application-design-center`.
 
 Run the check for your platform:
 
 | Platform | Command |
 |---|---|
-| macOS / Linux | `cd workshop/vulnerable-starter && make doctor` |
+| macOS / Linux | From the repository root, `make doctor` |
 | Windows PowerShell | `.\setup-windows.ps1 -Command doctor` |
 
-**Expected:** every `PASS` line; warnings about `agy` only if you skipped install. If a `FAIL` line appears, use the [facilitator guide](facilitator-guide.md#troubleshooting) or raise your hand.
+**Expected:** every `PASS` line; warnings about `agy` only if you skipped install. If a `FAIL` line appears, ask the facilitator or organizer for help.
 
 **Checkpoint 1:** `doctor` reports no failures.
 
 ## Step 2 — Find the problems with Gemini 4 (15 minutes)
 
-Start the assistant from the vulnerable-starter folder:
+Start the assistant from the repository root:
 
 ```sh
-cd workshop/vulnerable-starter
 agy
 ```
 
