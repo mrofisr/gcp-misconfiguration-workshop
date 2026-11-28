@@ -2,7 +2,7 @@
 
 # Facilitator guide — 90 minutes
 
-Run the [slide outline](../slides/outline.md) and let participants use the [participant guide](participant-lab-guide.md). This guide covers what you do before, during, and after.
+Run the slide outline from the `gh-pages` branch and let participants use the [participant guide](participant-lab-guide.md). This guide covers what you do before, during, and after.
 
 ## Before the session — preflight
 

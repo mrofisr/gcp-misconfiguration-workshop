@@ -14,7 +14,7 @@ Each objective is practiced in a specific lab step.
 
 | Objective | Lab step |
 |---|---|
-| Say what a cloud bucket and an IAM permission are in plain language | `../slides/outline.md`, segment 2; `glossary.md` |
+| Say what a cloud bucket and an IAM permission are in plain language | Slide outline on the `gh-pages` branch, segment 2; `glossary.md` |
 | Run the platform setup check (`doctor`) and read its result | `participant-lab-guide.md`, step 1 |
 | Ask Gemini 4 to review code and explain a security problem simply | `participant-lab-guide.md`, step 2 (prompt 1) |
 | Inspect a live bucket, IAM policy, and Cloud Run service with `gcloud` | `participant-lab-guide.md`, step 3 |
@@ -33,7 +33,7 @@ Each objective is practiced in a specific lab step.
 - [Participant lab guide](participant-lab-guide.md) — the steps you follow in the session.
 - [Facilitator guide](facilitator-guide.md) — setup, preflight, troubleshooting, and the optional Security Command Center demo.
 - [Plain-language glossary](glossary.md) — read this first if a word is unfamiliar.
-- [Slide outline](../slides/outline.md) — the 90-minute agenda.
+- Slide outline — the 90-minute agenda, maintained on the `gh-pages` branch.
 - [Vulnerable starter repository](vulnerable-starter/README.md) — the code you will inherit and repair.
 
 ## Commands on every platform

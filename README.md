@@ -15,8 +15,9 @@ A 90-minute, hands-on lab: find and fix common Google Cloud misconfigurations wi
 | Folder | What it is | Who needs it |
 | --- | --- | --- |
 | `workshop/` | The lab: guides, glossary, scripts, and the vulnerable starter | Participants |
-| `slides/` | The slide deck and the agenda (`outline.md`); facilitators present it, maintainers edit it | Facilitators and maintainers |
 | `openspec/` | Design history and specs for this repository. Tool convention; do not rename or move it | Maintainers |
+
+The facilitator slide deck and its agenda (`outline.md`) are not part of this source tree. They are maintained on the `gh-pages` branch, which publishes the deck; switch to that branch to present or edit it.
 
 ## Heads-up
 
